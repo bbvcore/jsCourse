@@ -1,0 +1,38 @@
+<body>
+</body>
+<script type="text/javascript">
+// ESTRUCTURAS DE CONTROL (Parte 1)
+//=================================
+// A.- Condicionales: if y else	
+// Además de if/else, como se puede ver en este ejemplo
+// es bastante habitual la 'anidación'.
+// También se puede usar el 'else if' como combinación de else e if en una
+// sola instrucción
+document.write('<b>Ejemplo de uso de la estructura if/else</b><br>');
+let age = window.prompt('Introduzca su edad: ');
+if (age === null || age === ''){
+	alert('Vacio');
+}else{
+	if (parseInt(age) < 18 && parseInt(age) >= 0 ){
+		document.write('Usted es menor de edad, no puede acceder.<br>');
+	}else{
+		document.write('Enhorabuena, es usted mayor de edad y puede acceder.<br>');
+	}
+}
+
+
+// B.- Loop con "while"
+// Importante inicializar la variable inicial
+// Importante realizar el incremento dentro del "loop" con la sentencia 'variable++'
+document.write('<br><b>Ejemplo de uso de la estructura while</b>');
+document.write('<br>'+'Números que forman la primera decena: <br>')
+let i = 0;
+while (i<10){
+	document.write(i);
+	if (i<9){
+		document.write(', ')
+	}
+	i++;
+}
+
+</script>

@@ -1,0 +1,35 @@
+<body>
+</body>
+<script type="text/javascript">
+// Declaración de variables
+//=========================
+let a;
+let b;
+a = window.prompt('Introduzca un valor numérico: ');
+b = window.prompt('Introduzca otro valor numérico: ');
+
+// Conversión
+//===========
+// Cuando usamos prompt el valor introducido es de tipo "String"
+// y para realizar el calculo necesitamos un valor del tipo "Int"
+// Para ello hacemos una conversión con parse+tipoValor => "parseInt()"
+// Pero podría ser parseFloat() sin problema
+// La operación inversa, convertir a un string, se hace con el método "valueOf()"
+let A = parseInt(a);
+let B = parseInt(b);
+
+// Operaciones matemáticas
+//========================
+let suma = A + B;
+let resta = A - B;
+let multiplicacion = A * B;
+let division = A / B ;
+
+// Resultados
+//===========
+// Los mostraremos por documento web: document.write()
+document.write('El resultado de la SUMA es: ' + suma +'<br>');
+document.write('El resultado de la RESTA es: ' + resta +'<br>');
+document.write('El resultado de la MULTIPLICACIÓN es: ' +  multiplicacion +'<br>');
+document.write('El resultado de la DIVISIÓN es: ' + division +'<br>');
+</script>

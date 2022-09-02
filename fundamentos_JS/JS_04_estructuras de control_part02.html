@@ -1,0 +1,21 @@
+<body>
+</body>
+<script type="text/javascript">
+// ESTRUCTURAS DE CONTROL (PARTE 2)
+//=================================
+// C.- Condicionales: DO WHILE
+// El DO/WHILE es un bucle que con una condición
+// que se cumple una vez.
+window.alert('Rango de valores válidos [1-9], ambos incluidos');
+window.alert('Si introduce un valor fuera de rango se interrumpe la entrada de datos.');
+document.write('Muestra valores introducidos comprendidos entre el 1 y el 9, ambos incluidos.<br>');
+document.write('Si se introduce un valor diferente al rango de [1-9] se cerrará la entrada de datos.<br>');
+let i;
+        do {
+       		 i = parseInt(prompt('Introducir valor entre [1-9], ambos inclusive: '));
+            document.write('Valor introducido: ' + i + '<br>');
+        	i++;
+        } while ((i > 0) && (i <= 10));
+
+
+</script>

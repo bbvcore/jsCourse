@@ -1,0 +1,65 @@
+
+<body>
+</body>
+<script type="text/javascript">
+// ESTRUCTURAS DE CONTROL (PARTE 4)
+// E.- BUCLE FOR
+//==============
+// 1.- Un Loop FOR clásico y habitual
+//===================================
+let array01 = new Array('Korn','Metallica','Slayer','Anthrax','Tool','Rush','Led Zeppelin');
+for (let i=0; i < array01.length ;i++){
+	document.write('Posicion en el array ['+i+']: Contenido del indice: '+array01[i]+'<br>');
+}
+//====================================================
+// 2.- Un loop FOR clásico para un array bidimensional
+//====================================================
+let matriz = [[1,2,3],[4,5,6]];
+for (let i=0; i< matriz.length;i++){
+	for (let j=0; j< matriz[i].length;j++){
+		document.write(matriz[i][j]);
+	}
+		document.write('<br>');
+}
+//========================================
+// 3.- BUCLE TIPO 'FOR OF'
+//========================================
+// Recorrer un Array con "for of": Itera objetos iterables como Strings
+let array02=[0,1,2,3,4,5,6,7,8,9];
+for (let i of array02){
+	document.write(i);
+}
+//===================================================
+// 4.- BUCLE TIPO FOR EACH (método de la clase Array)
+//===================================================
+// array.forEach(): método for each, como argumento usa una callback con 3 argumentos:
+// indice, valor actual y el propio array
+document.write('<br>');
+let array03 = ['Metal','Hardcore','Punk','Progressive','Alternative','Thrash','Skatepunk'];
+array03.forEach(item =>{
+	document.write(item);
+	document.write('<br>');
+});
+//========================================
+// 5.- BUCLE TIPO 'FOR IN'
+//========================================
+// For in: para iterar Objetos
+let Persona = {
+	name:'Su nombre aquí',
+	surname: 'Su apellido aquí',
+	date: ['dia','mes','año']
+}
+// Acceso directo a los valores del objeto
+document.write(Persona.name+'<br>');
+document.write(Persona.surname+'<br>');
+document.write(Persona.date+'<br>');
+document.write('<br>');
+// Acceso a los valores del objeto a través del 'for in'
+for (let i in Persona){
+	document.write(i + ' => ' + Persona[i] +'<br>');
+}
+// Iterar el array del objeto con un for clásico
+for (let i=0; i<Persona.date.length;i++){
+	document.write(Persona.date[i]+'<br>');
+}
+</script>

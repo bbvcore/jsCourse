@@ -1,0 +1,27 @@
+<body>
+</body>
+<script type="text/javascript">
+// Creación de variables
+//========================
+// Se pueden crear de tres formas: var, let y const, aunque const
+// es un tipo especial, ya que hablamos de una constante y su valor 
+// es fijo, aunque si se asocia a un array su valor puede ser dinámico
+//porque lo constante es el array, no el contenido del mismo.
+var nombre;
+var edad;
+
+// Entrada de datos por teclado
+//=============================
+nombre = window.prompt('Introduzca su nombre: ');
+apellido = window.prompt('Introduzca su apellido: ');
+
+// Visualización de los datos introducidos
+//========================================
+// Hay varias formas, y vamos a usar las tres:
+// A.- Por consola:
+console.log('Mi nombre es: ' +  nombre + ', y mi apellido es: ' + apellido);
+// B.- Por documento HTML, la propia página web:
+document.write('Mi nombre es: ' +  nombre + ', y mi apellido es: ' + apellido);
+// C.- Mediante un cuadro de alerta
+window.alert('Mi nombre es: ' +  nombre + ', y mi apellido es: ' + apellido);
+</script>
