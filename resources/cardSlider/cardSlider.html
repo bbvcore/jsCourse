@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Carrousel/Slider básico y responsive</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="device=width-device,initial-scale=1.0">
+    <style type="text/css">
+    /*  RESET */
+    *{
+        margin:0;
+        padding:0;
+    }
+    /*  CONFIGURACIÓN BÁSICA MAQUETACIÓN */
+    html{
+        /* Ocultar scroll bar en FIREFOX */
+        scrollbar-width: none; 
+        
+    }
+    body{
+        font-family:Arial, Helvetica,"sans-serif";
+        font-size:100%;
+        background:#d3d3d3;
+    }
+    /* CAPA PADRE DEL CONTENEDOR DEL SLIDER/CAROUSEL */
+    /* 
+        Al adecuarlo a un viewport del 100% y utilizar porcentajes en los div
+        el slider/carousel es relativamente responsive, se puede mejorar, pero
+        la intención del ejercicio es ser didáctico y servir de punto de partida
+        para un aprendizaje inicial de conceptos
+    */
+    #wrapper{
+        position:relative;
+        overflow:hidden;
+        width:95%;
+        height:300px;
+        margin:0 auto;
+        border:0px solid #222;
+        box-sizing: border-box;
+
+    }
+    /*  CONTROLES: MAYOR Y MENOR QUE */
+    span{
+        position:absolute;
+        width:4rem;
+        text-align:center;
+        top:40%;
+        font-size:3rem;
+        z-index:1;
+        background:#fff;
+        border-radius:100%;
+    }
+    span:nth-of-type(2){ /* desplaza elemento segundo de span, el ">"*/
+        left:96.5%;
+        text-align:center;
+    }
+    /* CONTENEDOR DEL SLIDER/CAROUSEL LOS DIVS/CARDS */
+    section{
+        width:100%;
+        margin:0px auto;
+        height:300px;
+        border:0px solid #555;
+        display:flex;
+        justify-content: center;
+        align-content: center;
+        flex-shrink:0;
+        overflow:hidden;
+        
+    }
+/*  PERSONALIZAR SCROLLBAR, PERMITE EL MOTOR WEBKIT */
+/* Lo Ocultamos */
+    section::-webkit-scrollbar{
+        /* Funcionan ambas */
+        visibility:hidden;
+        background:transparent;
+    }
+/*  TARJETAS/CARDS/DIV DE CONTENITO */
+    div{
+        min-width:50%;
+        height:200px;
+        position:relative;
+        left:0;
+        text-align:center;
+        padding-top:60px;
+        margin:20px 20px 0 20px;
+        color:#f3f3f3;
+        background:#4286b4;
+        transition:0.5s all;
+        clear:both;
+        border:2px solid #fff;
+    }
+
+    @media all and (max-width:1500px){
+        span:nth-of-type(2){ /* desplaza elemento segundo de span, el ">"*/
+        left:95%;
+    }
+    }
+    @media all and(max-width:1200px){
+        span:nth-of-type(2){ /* desplaza elemento segundo de span, el ">"*/
+        left:90%;
+    }
+    }
+    @media all and (max-width:800px){
+        span:nth-of-type(2){ /* desplaza elemento segundo de span, el ">"*/
+        left:90%;
+    }
+    }
+    </style>
+</head>
+<body>
+    <main id="wrapper">
+<!-- Capas de contenido para el Slider -->
+        <section>
+            <!-- Contenido que desliza en el Slider -->
+            <div>Capa #1</div>
+            <div>Capa #2</div>
+            <div>Capa #3</div>
+            <div>Capa #4</div>
+        </section>
+<!-- Controllers -->
+        <span>&lt;</span>
+        <span>&gt;</span>
+    </main> 
+</body>
+<script type="text/javascript">
+//===========================
+// 1.- Capturar los controles
+//===========================
+    let span = document.getElementsByTagName('span');
+    let divs = document.getElementsByTagName('div');
+    // Inicialización del contador/acumulador
+    let counter = 0;
+    console.log("Contador Inicial: " + counter);
+//==========================================
+// 2.- Retroceder, span 0, es el "mayor que"
+//==========================================
+    span[0].addEventListener('click',prev,true);
+    function prev(){
+        counter--;
+        console.log(counter);
+        let totalDivs = divs.length;
+        console.log("Total:" + totalDivs);
+        for(let i of divs){
+            // En este caso usamos el "for of" que sirve para iterar elementos iterables
+            // como en este caso es la HTMLCollection de divs capturada con getElementsByTagName
+            // Donde i es la variable para iterar el array divs capturado
+            // y divs el nombre de la colección HTML
+            if(counter<=0){i.style.left="55%";}
+            if(counter<0){counter=0;}
+        }
+    }
+//=======================================
+// 3.- Avanzar, span 1, es el "mayor que"
+//=======================================
+    span[1].addEventListener('click',next,true);
+    function next(){
+        counter++;
+        console.log(counter);
+        let totalDivs = divs.length;
+        console.log("Total:" + totalDivs);
+        for(let i=0; i<totalDivs;i++){
+            // Si contador es igual a 1, se ha avanzado
+            if (counter==1){
+                divs[i].style.left="-55%";  // Movimiento de los div del 55% del tamaño del contenedor 
+                //console.log(divs[i]);
+                // A todos los divs se les añade un posicionamiento de su margen izquierdo del 66% en negativo
+                // Es decir div1,div2,div3 y div4, se desplazan el 66% del tamaño hacía la izquierda
+                // así se produce la sensación de avance.
+                // Para que no sea brusco en la capa div se añadió con el CSS la transición de 0.5s, para suavizar 
+                // el movimiento.
+            }
+            if (counter>=1){
+                // So el contador es más de 1, se ajusta a 1, para que no se incremente el acumulador
+                // así cuando se decremente se decrementa de 1 y se cumple la condición de la función "prev"
+                // sino se hace así, el contador hubiera incrementado según número de clicks, y habría
+                // que decrementar mucho hasta llegar a 0, que es cuando se activa la función "prev"
+                counter=1;
+            }
+        }
+    }
+
+
+//================================================================================================
+//  ANEXO - SOLO INFORMACION ADICIONAL - ESTA PARTE ES INNECESARIA PARA QUE FUNCIONE EL SLIDER
+//================================================================================================
+// INFORMACIÓN DE LAS CAPAS, TAMAÑOS, ETC... SOLO INFORMÁTIVO, NO ES RELEVANTE PARA FUNCIONAMIENTO
+//================================================================================================
+        console.log("Número y nombre de los divs:");
+        let numberOfDivs = document.getElementsByTagName('div');
+        console.log(numberOfDivs);
+        let divSingle = document.getElementsByTagName('div')[0];
+        console.log("Div Inicial: ");
+        console.log(divSingle);
+        sizeDiv = divSingle.clientWidth;
+        console.log("Tamaño del DOMRect");
+        let section = document.getElementsByTagName('section')[0];
+        console.log(section.getBoundingClientRect().width);
+    // Averiguar Datos Geométricos del contenedor (section) y de la clase div, en concreto del elemento inicial:
+        console.log("Datos geométricos:")
+        console.log("Section width/height: ");
+        console.log(section.clientWidth);
+        console.log(section.clientHeight);
+        console.log("DivSingle width/height: ");
+        console.log(divSingle.clientWidth);
+        console.log(divSingle.clientHeight);
+        console.log(divSingle.offsetLeft);
+</script>   
+</html>
