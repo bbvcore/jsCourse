@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider JS Full Width</title>
+    <style type="text/css">
+    *{
+        margin:0;
+        padding:0;
+    }
+    body{
+        font-family: sans-serif;
+        overflow:hidden;
+
+    }
+    .slider-container{
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        /*coloca todos los elementos en 1 línea horizontal ajustados*/
+        margin:0 auto;
+    }
+    .slider-content{
+        width:100%;
+        height:600px;
+        display:flex;
+        align-items:center;
+        background:#fafafa;
+        justify-content:space-around;
+        flex-shrink: 0; 
+        /* evitar que se pongan con flesh en linea evitando que encoja
+        así se ve solo 1 slider, y oculta los demás, pero todos
+        forman parte de un eje horizontal de X capas y x veces el 100% de width
+        */
+    }
+    .slider-content  img{
+       width:400px;
+       padding:32px;
+    }
+    .slider-content  .text{
+        width:auto;
+        padding-bottom:32px;
+    }
+    .slider-content h2{
+        font-weight:200;
+        text-align:left;
+        line-height:40px;
+        padding:32px;
+    }
+    .slider-content  a{
+        color:#fff;
+        width:100px;
+        display:block;
+        margin-left:32px;
+        border-radius:10px;
+        text-align:center;
+        background:#4286b4;
+        text-decoration:none;
+        margin-top:1em;
+        padding:.5em;
+    }
+/*
+Para tipos: firts-of-type, last-of-type o nth-of-type: para cq elemento tag
+Para hijos: child
+*/
+    .slider-content:nth-child(2){ /* selecciono el hijo 2 */
+        background:#daa250; /* first-child o last-child para 1º y último*/
+        color:black;
+    }
+        .slider-controls{
+            display:flex;
+            justify-content:space-between;
+            position:absolute;
+            top:45%;
+            width:100%;
+        }
+        .slider-controls button{
+            border-radius:50px;
+            border:0;
+            padding:1em;
+        }
+        .slider-controls button#prev{
+            margin-left:20px;
+        }
+        .slider-controls button#next{
+            margin-right:20px;
+        }
+
+@media all  and (max-width:992px){
+    .slider-content{
+        width:100%;
+        height:auto;
+    }
+    /* Tamaño imágen */
+    .slider-container  img {
+        max-width:200px;
+    }
+    /* Tamaño hijos div */
+    .slider-content .text{
+        width:auto;
+        height:auto;
+    }
+    /* Tamaño párrafo dentro de la clase text */
+    .slider-content  h2{
+        font-size:16px;
+    }
+}
+@media all and (max-width:496px){
+    /* Tamaño imágen */
+    .slider-container img {
+        display:none;
+    }
+    /* Tamaño hijos div */
+    .slider-content .text{
+        width:100%;
+        display:block;
+        height:auto;
+        font-size:16px;   
+    }
+}
+    </style>
+</head>
+<body>
+<!-- Inicio del slider -->  
+<div class="slider-container">    
+    <section class="slider-content">
+        <div class="text">
+            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
+            <a href="#">Sección 01</a>
+        </div>
+            <img src="img1.jpg" alt="Imagen 01 del Slider">
+    </section>
+    <section class="slider-content">   
+        <div class="text">
+            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </h2>
+            <a href="#">Sección 02</a>
+        </div>
+            <img src="img2.jpg" alt="Imagen 02 del Slider">
+    </section>
+    <section class="slider-content">   
+        <div class="text">
+            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </h2>
+            <a href="#">Sección 03</a>
+        </div>    
+            <img src="img3.jpg" alt="Imagen 03 del Slider">
+    </section>    
+</div><!-- End slider --> 
+    <!-- Controles-->
+    <div class="slider-controls">
+        <button id="prev">Anterior</button>
+        <button id="next">Siguiente</button>
+    </div>  
+    <script type="text/javascript">
+// 1.- ESPERAR COMPROBACIÓN DE CARGA DEL DOM PARA INICIAR    
+//=======================================================
+    document.addEventListener("DOMContentLoaded",()=>{
+// 2.- CAPTURA DE CONSTANTES Y VARIABLES: CONTENEDOR, ARRAY DE SLIDERS, TAMAÑO DEL WIDTH...
+        const slider = document.getElementsByClassName("slider-container")[0];
+        const arraySlides = document.getElementsByClassName('slider-content');
+        let total = arraySlides.length;
+        // Counter sirve para saber en que posición de diapositiva estamos del Slider
+        let counter=0;
+        // Obtener tamaño del elemento, del array
+        const width = arraySlides[0].clientWidth; 
+        console.log(width);
+        let prev = document.getElementById('prev');
+        let next = document.getElementById('next');
+        console.log(prev);
+        console.log(next);
+// Listeners
+         prev.addEventListener('click', ()=>{  
+        // Se comprueba donde estamos, y entonces según donde estemos se aplica el IF y se dirige a la diapositiva correspondiente 
+            counter === 0 ? counter=total-1 : counter--;
+            slider.style.transform = "translate("+(-width*counter) +"px)"; // Add CSS
+            if (counter > total-1)
+            counter=0;
+        },true);
+        next.addEventListener('click',()=>{ // Regular
+        // Se comprueba donde estamos, y entonces según donde estemos se aplica el IF y se dirige a la diapositiva correspondiente 
+            counter === total-1 ? counter=0 : counter++;
+            slider.style.transform = "translate("+(-width*counter) +"px)"; // Add CSS
+            if (counter == total-1)
+            counter=total-1;    
+        },true);
+// Evitar ruptura rotación móvil. Propiedad clientWidth proporciona el width
+        window.addEventListener('resize', function(){
+            let width = arraySlides[0].clientWidth;
+        },true);
+// Recorrer slider horizontal
+        function slides(){
+            slider.style.transform = "translate("+(-width*counter) +"px)"; // Add CSS
+            slider.style.transition = "transform 0.5s"; // Add CSS
+            counter++;
+            if (counter == total){
+                counter=0;
+            }
+        }    
+        // Start Loop   
+      setInterval(slides,7500);
+    },true);
+    </script>
+</body>
+</html>
