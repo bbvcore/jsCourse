@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="author" content="Borja Bas Ventín">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta de test</title>
+</head>
+<body>
+    <!-- Capa para el test -->
+    <div id="test-layer"></div>
+    <!-- Script para la mágia -->
+    <script type="text/javascript">
+    // Array con preguntas y respuestas
+        const preguntas = [
+        // Pregunta 1 con id 1
+            {
+                id:1,
+                cuestion: "¿Quién de los siguientes guitarristas es miembro de la banda KoRn?",
+                // Array con respuestas
+                respuestas:[
+                // Respuesta 1
+                    {
+                        id:1, 
+                        answer:'Munky',
+                        isTrue: true
+                    },
+                // Respuesta 2
+                    {
+                        id:2, 
+                        answer: 'Kirk Hammett',
+                        isTrue: false
+                    }
+                ]
+            }
+        ]
+//---------------------------------------------------------------------------------------------------------------------------------
+// Lógica de funcionamiento para testear pregunta
+//---------------------------------------------------------------------------------------------------------------------------------
+    const verification = (idCuestion, idAnswer) => {
+        // Buscar el id de la pregunta, se usa find por eficacia dado que nada más encuentra el valor buscado detiene la iteración
+        const pregunta = preguntas.find(id => id.id == idCuestion)
+        if (!pregunta) return false
+        // Buscar en el array de las respuestas perteneciente a la pregunta el id de la respuesta
+        const respuesta = pregunta.respuestas.find(id => id.id === idAnswer)
+        // Retorna la respuesta si la encuentra, si no la encuentra retorna false
+        return respuesta ? respuesta.isTrue : false
+    }
+//---------------------------------------------------------------------------------------------------------------------------------
+// Generar dinámicamente todo con JS
+//---------------------------------------------------------------------------------------------------------------------------------
+    // Selección de la capa contenedora
+    const app = document.getElementById('test-layer')
+    // Itera array de preguntas y por cada pregunta busca las respuestas 
+    preguntas.forEach( i => {
+    const div = document.createElement("div")
+        // Renderizar la pregunta
+        div.innerHTML = `
+         <h3>${i.cuestion}</h3>   
+        ` +
+        // Map devuelve un array de strings
+        i.respuestas.map(r => `
+            <input type="radio" name="pregunta${i.id}" value="${r.id}">
+            ${r.answer}
+        <br>
+        `).join("")+ 
+    // Join une las cadenas del array en un solo string, para que innerHTML pueda pintarlo todo, pq sino sería un array y no podría , y así innerHTML interpresa ese String como html
+        `
+        <button onclick="comprobation(${i.id})">Comprobar</button>
+        <p id="result${i.id}"></p>
+        `
+        // Añadir al div app el div creado
+        app.appendChild(div)
+    })
+
+// Función para realizar la comprobación
+    window.comprobation = (idCuestion) => {
+        const selection = document.querySelector(`input[name=pregunta${idCuestion}]:checked`)
+        const result =  document.getElementById(`result${idCuestion}`)
+        if(!selection){
+            result.textContent = "Seleccionar una respuesta"
+            return
+        }
+        const isTrue = verification(idCuestion, parseInt(selection.value))
+        result.textContent = isTrue ? "¡CORRECTO!, has acertado" : "¡ERROR!, respuesta incorrecta"
+    }
+    </script>
+</body>
+</html>
