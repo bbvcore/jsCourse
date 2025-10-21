@@ -8,3 +8,6 @@ en un solo fichero **HTML** y dentro de el se realiza toda la lógica necesaria 
 
 Para ello se usa un array de objetos en el que cada objeto contiene una pregunta y un array con las respuestas a escoger. Cada respuesta contiene a su vez un id, la respuesta a mostrar y una propiedad booleana para etiquetar a cada respuesta como verdadera o falsa.
 
+### Versión App Test
+En esta versión se dispone de un servidor, un frontend, una base de datos y 
+una API con endpoints de gestión del CRUD para la base de datos.

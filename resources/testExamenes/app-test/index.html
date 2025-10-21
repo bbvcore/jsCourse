@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"> 
+<meta name="author" content="Borja Bas Ventín">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ejemplo de test para examen</title>
+<style type="text/css">
+    *{margin:0; padding:0;}
+    body { font-family: Arial, Helvetica, sans-serif; margin: 20px; font-size:100%;}
+    h3 { margin-bottom: 8px; }
+    button { margin-top: 10px; padding: 6px 12px; border-radius: 8px; }
+    .explication { font-style: italic; color: #555; margin-top: 5px; }
+    .correct { color: #4286b4; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
+    .question-block { border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 10px; }
+</style>
+</head>
+<body>
+    <!-- Capa donde se generarán las preguntas del test -->
+    <div id="test-layer"></div>
+    <!-- Botones para interaccionar -->
+        <button id="send-test">Enviar test</button>
+        <button id="new-test">Nuevo test</button>
+    <!-- Parrafo para llevar el recuento de las preguntas y el marcador/puntuaje -->    
+    <p id="score"></p>
+
+<script type="text/javascript">
+// Captura de los elementos del DOM necesarios
+    const app = document.getElementById('test-layer');
+    const newBtn = document.getElementById('new-test');
+    const sendBtn = document.getElementById('send-test');
+    const score = document.getElementById('score');
+    
+// Array para las preguntas
+    let questions = []; 
+
+// Carga de las preguntas desde el Backend (servidor NodeJS), función asincrona
+    const loadQuestionsToStart = async () => {
+        // Control de errores mediante el bloque try/catch
+        try {
+            const response = await fetch('http://localhost:5000/questions'); // Petición al endpoint del backend server.js
+            if (!response.ok) throw new Error('ERROR!, se ha producido un error al acceder al backend y obtener las preguntas'); // Si no se puede conectar con el endpoint se lanza un error
+            
+            questions = Object.values(await response.json()); // Se extraen los valores del objeto JSON enviado con res.send() desde el backend
+            //questions = await res.json(); // Si se utiliza un array en res.send() desde el backend
+
+            renderData();
+            score.textContent = ''; // Asignación inicial del marcador
+        } catch (error) {
+            console.error(error);
+            app.innerHTML = '<p>ERROR!, se ha producido un erro en la carga de preguntas al recibir los datos del endpoint</p>';
+        }
+    }
+
+// Renderizando los datos recibidos en el HTML
+const renderData = () => {
+    app.innerHTML = '';
+    questions.forEach(q => {
+        const div = document.createElement('div');
+        div.classList.add('question-block');
+        div.innerHTML = `
+            <h3>${q.question}</h3>
+            ${q.answers.map(a => `
+                <input type="radio" name="question${q.idQuestion}" value="${a.idAnswer}"> ${a.answer}<br>
+            `).join('')}
+            <p id="result${q.idQuestion}"></p>
+        `;
+        app.appendChild(div);
+    });
+}
+
+// Enviar Test y validar respuestas
+    sendBtn.addEventListener('click', () => {
+        let correctas = 0;
+        let total = questions.length;
+
+        questions.forEach(q => {
+            const seleccion = document.querySelector(`input[name=question${q.idQuestion}]:checked`);
+            const result = document.getElementById(`result${q.idQuestion}`);
+
+            if (!seleccion) {
+                result.innerHTML = `<span class="incorrecta">No seleccionaste respuesta.</span>`;
+                return;
+            }
+
+            const selectedId = parseInt(seleccion.value);
+            const isCorrect = selectedId === q.correctAnswerId;
+
+            if (isCorrect) {
+                correctas++;
+                result.innerHTML = `<span class="correct"> ¡Respuesta Correcta!</span>`;
+            } else {
+                result.innerHTML = `<span class="incorrect"> ¡Respuesta Incorrecta!.</span>`;
+            }
+
+            if (q.explication && q.explication.trim() !== '') {
+                result.innerHTML += `<div class="explication"> ${q.explication}</div>`;
+            }
+        });
+
+        score.textContent = `Puntuación: ${correctas} / ${total}`;
+    });
+
+// Lanzar un nuevo test con preguntas nuevas
+    newBtn.addEventListener('click', loadQuestionsToStart);
+
+// Inicializar la carga de las preguntas
+    loadQuestionsToStart();
+</script>
+</body>
+</html>
+
